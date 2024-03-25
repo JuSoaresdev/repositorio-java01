@@ -1,0 +1,70 @@
+import java.util.Scanner;
+
+public class CrescimentoPopulacional {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        char continuar;
+
+        do {
+            System.out.println("Entre com as informações para os países:");
+            int populacaoA = lerPopulacao(scanner, "A");
+            double taxaCrescimentoA = lerTaxaCrescimento(scanner, "A");
+
+            int populacaoB = lerPopulacao(scanner, "B");
+            double taxaCrescimentoB = lerTaxaCrescimento(scanner, "B");
+
+            int anos = calcularAnos(populacaoA, taxaCrescimentoA, populacaoB, taxaCrescimentoB);
+
+            System.out.println("Após " + anos + " anos, a população do país A ultrapassará a população do país B.");
+            System.out.println("População do país A: " + populacaoA);
+            System.out.println("População do país B: " + populacaoB);
+
+            System.out.println("Deseja realizar outra operação? (S/N)");
+            continuar = scanner.next().charAt(0);
+        } while (continuar == 'S' || continuar == 's');
+
+        scanner.close();
+    }
+
+    public static int lerPopulacao(Scanner scanner, String pais) {
+        int populacao;
+        do {
+            System.out.print("Informe a população do país " + pais + ": ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, digite um valor válido.");
+                scanner.next(); // Limpar o buffer do scanner
+            }
+            populacao = scanner.nextInt();
+            if (populacao <= 0) {
+                System.out.println("A população deve ser um número positivo.");
+            }
+        } while (populacao <= 0);
+        return populacao;
+    }
+
+    public static double lerTaxaCrescimento(Scanner scanner, String pais) {
+        double taxa;
+        do {
+            System.out.print("Informe a taxa de crescimento do país " + pais + " (em %): ");
+            while (!scanner.hasNextDouble()) {
+                System.out.println("Por favor, digite um valor válido.");
+                scanner.next(); // Limpar o buffer do scanner
+            }
+            taxa = scanner.nextDouble();
+            if (taxa <= 0) {
+                System.out.println("A taxa de crescimento deve ser um número positivo.");
+            }
+        } while (taxa <= 0);
+        return taxa / 100; // Convertendo a taxa para decimal
+    }
+
+    public static int calcularAnos(int populacaoA, double taxaCrescimentoA, int populacaoB, double taxaCrescimentoB) {
+        int anos = 0;
+        while (populacaoA < populacaoB) {
+            populacaoA += (int) (populacaoA * taxaCrescimentoA);
+            populacaoB += (int) (populacaoB * taxaCrescimentoB);
+            anos++;
+        }
+        return anos;
+    }
+}
